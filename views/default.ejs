@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset = "utf-8">
+	<title> My App</title>
+	<script>
+		var xmlhttp;
+		function search(val) {
+			if(window.XMLHttpRequest) {
+				xmlhttp = new XMLHttpRequest();
+			}
+			else {
+				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+
+			xmlhttp.onreadystatechange = handleReply;
+			xmlhttp.open("POST","/test",true);
+			xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+			xmlhttp.send('artist='+val);
+		}
+
+		function handleReply() {
+			if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+				if(xmlhttp.responseText == "error") {
+					alert("update failed");
+				}	
+				else {
+					console.log(xmlhttp.responseText);
+					document.getElementById('result').innerHTML  = xmlhttp.responseText;
+				
+				}	
+			}
+		}	
+	</script>
+</head>
+<body>
+	<select onChange = "search(this.value)">
+		<option value = "Elton John" selected>Elton John</option>
+		<option value = "Stevie Wonder">Stevie Wonder</option>
+		<option value = "Frank Sinatra">Frank Sinatra</option>
+		<option value = "Louis Armstrong">Louis Armstrong</option>
+	</select>
+	<ul>
+	<% for(var i=0; i < users.length; i++) { %>
+		<li><%= users[i] %></li>
+	<% } %>
+	<div id = "result"></div>
+	</ul>
+</body>
+</html>
