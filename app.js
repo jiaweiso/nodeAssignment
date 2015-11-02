@@ -16,12 +16,12 @@ app.set('view engine','ejs');
 app.get('/',function(req,res) {
 
 	var items = null, items2 = null,items3 = null,items4 = null;
-	youtube.addParam('type','playlist');
+	//youtube.addParam('type','playlist');
 	youtube.search("Elton John",1,function(error, result) {
 		if(error) {
 			console.log(error);
 		} else {
-			console.log(result.items.snippet);
+			console.log(result.items[0].id);
 			//users = JSON.stringify(result,null,10);
 			items = result.items;	
 		}
@@ -77,10 +77,10 @@ app.post('/test',function(req,res) {
 	res.send(req.body.artist);
 })
 
-app.get('/who/:name?',function(req,res){
-	var name = req.params.name;
-	res.send(name + 'here');
-})
+// app.get('/who/:name?',function(req,res){
+// 	var name = req.params.name;
+// 	res.send(name + 'here');
+// })
 
 app.get('*', function(req,res) {
 	res.send("bad route");
