@@ -2,49 +2,48 @@
 <html>
 <head>
 	<meta charset = "utf-8">
-	<title> My App</title>
+	<title> playlist</title>
+	<script src = ""></script>
 	<script>
-		var xmlhttp;
-		function search(val) {
-			if(window.XMLHttpRequest) {
-				xmlhttp = new XMLHttpRequest();
+		function changeDisplay(val) {
+			var ids = ["Elton John","Stevie Wonder","Frank Sinatra","Louis Armstrong"];
+			for(var i = 0; i < ids.length; i++) {
+				if(ids[i] != val) {
+					document.getElementById(ids[i]).style.display = "none";
+				} else {
+					document.getElementById(val).style.display = "block";
+				}
 			}
-			else {
-				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-			}
-
-			xmlhttp.onreadystatechange = handleReply;
-			xmlhttp.open("POST","/test",true);
-			xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-			xmlhttp.send('artist='+val);
 		}
-
-		function handleReply() {
-			if(xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-				if(xmlhttp.responseText == "error") {
-					alert("update failed");
-				}	
-				else {
-					console.log(xmlhttp.responseText);
-					document.getElementById('result').innerHTML  = xmlhttp.responseText;
-				
-				}	
-			}
-		}	
 	</script>
 </head>
 <body>
-	<select onChange = "search(this.value)">
+	<select onChange = "changeDisplay(this.value)">
 		<option value = "Elton John" selected>Elton John</option>
 		<option value = "Stevie Wonder">Stevie Wonder</option>
 		<option value = "Frank Sinatra">Frank Sinatra</option>
 		<option value = "Louis Armstrong">Louis Armstrong</option>
 	</select>
-	<ul>
-	<% for(var i=0; i < users.length; i++) { %>
-		<li><%= users[i] %></li>
-	<% } %>
-	<div id = "result"></div>
-	</ul>
+	<div id = "Elton John">
+		<% output1.forEach(function(name){ %>
+			<%= name.snippet.publishedAt %>
+		<% }) %>
+	</div>
+	<div id = "Stevie Wonder" style = "display:none">
+		<% output2.forEach(function(name){ %>
+			<%= name.snippet.publishedAt %>
+		<% }) %>		
+	</div>
+	<div id = "Frank Sinatra" style = "display:none">
+		<% output3.forEach(function(name){ %>
+			<%= name.snippet.publishedAt %>
+		<% }) %>		
+	</div>
+	<div id = "Louis Armstrong" style ="display:none">
+		<% output4.forEach(function(name){ %>
+			<%= name.snippet.publishedAt %>
+		<% }) %>
+	</div>
+
 </body>
 </html>
