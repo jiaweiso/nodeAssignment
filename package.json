@@ -9,9 +9,11 @@
   "author": "jiawei",
   "license": "ISC",
   "dependencies": {
+    "better-console": "^0.2.4",
     "body-parser": "~1.0.0",
     "cookie-parser": "~1.0.0",
+    "del": "^2.0.2",
     "ejs": "^2.3.4",
-    "express": "^4.13.3",
+    "express": "^4.13.3"
   }
 }

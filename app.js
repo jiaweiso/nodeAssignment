@@ -10,6 +10,7 @@ youtube.setKey('AIzaSyCZefdm2fEDLphY-u6bo0a1Rvj4iEPSdrg');
 
 
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(express.static(__dirname+'/public'));
 
 app.set('view engine','ejs');
 
@@ -17,16 +18,16 @@ app.get('/',function(req,res) {
 
 	var items = null, items2 = null,items3 = null,items4 = null;
 	//youtube.addParam('type','playlist');
-	youtube.search("Elton John",1,function(error, result) {
+	youtube.search("Elton John",50,function(error, result) {
 		if(error) {
 			console.log(error);
 		} else {
-			console.log(result.items[0].id);
+			//console.log(result.items[0].snippet.thumbnails);
 			//users = JSON.stringify(result,null,10);
 			items = result.items;	
 		}
 
-		youtube.search("Stevie Wonder",10,function(error, result) {
+		youtube.search("Stevie Wonder",50,function(error, result) {
 			if(error) {
 				console.log(error);
 			} else {
@@ -34,25 +35,24 @@ app.get('/',function(req,res) {
 				items2 = result.items;
 			}
 
-			youtube.search("Frank Sinatra",10,function(error, result) {
+			youtube.search("Frank Sinatra",50,function(error, result) {
 				if(error) {
 					console.log(error);
 				} else {
 					items3 = result.items;
 			//users3 = JSON.stringify(result,null,10).items;
 				}
-				youtube.search("Louis Armstrong",10,function(error, result) {
+				youtube.search("Louis Armstrong",50,function(error, result) {
 					if(error) {
 						console.log(error);
 					} else {		
 						items4 = result.items;
 					}
 
+					var totalItems = [items,items2,items3,items4];
+
 					res.render('default',{
-						output1: items,
-						output2: items2,
-						output3: items3,
-						output4: items4
+						output: totalItems
 					});
 
 				});
@@ -87,6 +87,6 @@ app.get('*', function(req,res) {
 })
 
 var server = app.listen(36924,function(){
-	console.log('success')
+	console.log('Go to port 36924')
 
 })

@@ -3,104 +3,61 @@
 <head>
 	<meta charset = "utf-8">
 	<title> playlist</title>
-	<style>
-		body { background: #222; }
-#video_player { 
-  display: table; line-height: 0;
-  font-size: 0; background: #000;
-  max-width: 1000px;
-  margin: 0 auto;
-}
-#video_container { 
-  position: relative;
-}
-#video_player div, #video_player figcaption { 
-  display: table-cell;
-  vertical-align: top; 
-}
-#video_container video { 
-  position: absolute; 
-  display: block;
-  width: 100%;
-  height: 100%;
-  top: 0;
-}
-#video_player figcaption { width: 25%; }
-#video_player figcaption a { display: block; }
-#video_player figcaption a { 
-  opacity: .5;
-  transition: 1s opacity; 
-}
-#video_player figcaption a img, figure video { 
-  width: 100%; height: auto; 
-}
-#video_player figcaption a.currentvid, #video_player figcaption a:hover, #video_player figcaption a:focus { opacity: 1; }
-@media (max-width: 700px) {
-  #video_player video, #video_player figcaption { 
-    display: table-row; 
-  }
-#video_container { padding-top: 56.25%; }
-#video_player figcaption a { 
-  display: inline-block; width: 33.33%; 
-}
-}
-
-	</style>
-	<script>
-		function changeDisplay(val) {
-			var ids = ["Elton John","Stevie Wonder","Frank Sinatra","Louis Armstrong"];
-			for(var i = 0; i < ids.length; i++) {
-				if(ids[i] != val) {
-					document.getElementById(ids[i]).style.display = "none";
-				} else {
-					document.getElementById(val).style.display = "block";
-				}
-			}
-		}
-	</script>
+	<link type = "text/css" rel = "stylesheet" href = "/style.css" />
+	<script type="text/javascript" src = "/function.js"></script>
 </head>
 <body>
-	<select onChange = "changeDisplay(this.value)">
-		<option value = "Elton John" selected>Elton John</option>
-		<option value = "Stevie Wonder">Stevie Wonder</option>
-		<option value = "Frank Sinatra">Frank Sinatra</option>
-		<option value = "Louis Armstrong">Louis Armstrong</option>
+	<p class = "label">Choose the artist </p>
+	<select id = "artist" onChange = "changeDisplay(this.value)">
+		<option value = "option1" selected>Elton John</option>
+		<option value = "option2">Stevie Wonder</option>
+		<option value = "option3">Frank Sinatra</option>
+		<option value = "option4">Louis Armstrong</option>
 	</select>
-	<div id = "Elton John">
-			<iframe width = "420" height = "345" src = "http://www.youtube.com/embed/<%= output1[0].id.videoId %>">
-			</iframe>
-		
-	</div>
-	<div id = "Stevie Wonder" style = "display:none">
-		<figure id="video_player">
-  			<div id="video_container">
-  				<iframe width = "840" height = "690" src = "http://www.youtube.com/embed/<%= output2[0].id.videoId %>">
+
+	<% for(var k = 1 ; k <= output.length; k++) {%>
+	<div id = "option<%=k%>"
+		<% if(k != 1) {%>
+			style = "display:none"
+		<%}%>
+		>
+		<figure class="video_player">
+  			<div class="video_container">
+  				<iframe  src = "http://www.youtube.com/embed/<%= output[k-1][0].id.videoId %>">
 				</iframe>
 			</div>
 			<figcaption>
-  				<a href="http://www.youtube.com/embed/<%= output2[0].id.videoId %>" class="currentvid">
-    				<img src="http://demosthenes.info/assets/images/vid-glacier.jpg">
-  				</a>
-  				<% for(var i = 1 ; i < output2.length; i++) { %>
-  					<a href="http://www.youtube.com/embed/<%= output2[i].id.videoId %>">
-    				<img src="http://demosthenes.info/assets/images/vid-lake.jpg">
+  					<% for(var i = 0 ; i < output[k-1].length; i++) { %>
+  					<% if(i%3 == 0) { %>
+  						<span id = "option<%=k%> page<%=i/3%>"
+  							<% if(i > 2) { %>
+  								style = "display:none"
+  							<%}%>
+  						>
+  					<% } %>
+  					<a href="http://www.youtube.com/embed/<%= output[k-1][i].id.videoId %>"
+  						<% if (i == 0) { %>
+  							 class="currentvid"
+  						<% } %>
+  					>
+    				<img src="<%= output[k-1][i].snippet.thumbnails.medium.url%>">
   					</a>
+  					<% if(i%3 == 2) { %>
+  						</span>
+  					<% } %>
   				<% } %>
   				
 			</figcaption>
+			<span id = "option<%=k%> currentPage" style ="display:none">0</span>
+			<span id = "option<%=k%> totalPage" style = "display:none"><%=(output[k-1].length-1)/3%></span>
 		</figure>	
-	</div> 
-
-
-	<div id = "Frank Sinatra" style = "display:none">
-		<% output3.forEach(function(name){ %>
-			<%= name.snippet.publishedAt %>
-		<% }) %>		
+		
 	</div>
-	<div id = "Louis Armstrong" style ="display:none">
-		<% output4.forEach(function(name){ %>
-			<%= name.snippet.publishedAt %>
-		<% }) %>
+	<% } %>
+
+	<div class = "buttonPanel">
+		<button class = "btn" onclick = "previousPage()">Previous</button>
+		<button class = "btn" onclick = "nextPage()">Next</button>
 	</div>
 
 </body>
